@@ -148,7 +148,7 @@ int main(void)
 	// __HAL_TIM_CLEAR_IT(&htim9 ,TIM_IT_UPDATE);
 
 	/* Set the Autoreload value */
-	TIM9->ARR = 39 ;
+	TIM9->ARR = 49 ;
 
 	/* Set the Prescaler value */
 	TIM9->PSC = 215;
@@ -190,8 +190,13 @@ int main(void)
 	CH1_captureDone=0;
 
 	while (0 == CH1_captureDone) { ; }
+	CH1_diffCapture = CH1_capture- last_CH1_capture;
+	last_CH1_capture = CH1_capture;
 	TIM2->CCR2 = TIM2->CNT+CH1_diffCapture;
 	CH1_captureDone=0;
+
+	fperiod = (float) CH1_diffCapture*ratio;
+	period = (uint32_t) (fperiod);
 
   /* USER CODE END 2 */
 
